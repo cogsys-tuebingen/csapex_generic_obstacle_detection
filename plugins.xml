@@ -1,0 +1,6 @@
+<library path="libgeneric_obstacle_detection_apex_node">
+<class type="od::ObstacleDetector" base_class_type="csapex::Node">
+  <description>Finds obstacles in a point cloud</description>
+  <tags>Obstacle Detection</tags>
+</class>
+</library>

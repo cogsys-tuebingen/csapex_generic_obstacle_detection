@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <name>generic_obstacle_detection</name>
+  <version>1.0.0</version>
+  <description>Generic obstacle detection in structured point clouds</description>
+
+  <maintainer email="sebastian.buck@uni-tuebingen.de">buck</maintainer>
+
+  <license>BSD</license>
+  <author email="sebastian.buck@uni-tuebingen.de">buck</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>csapex</build_depend>
+  <build_depend>csapex_point_cloud</build_depend>
+  <build_depend>csapex_transform</build_depend>
+  <build_depend>csapex_ros</build_depend>
+  <build_depend>tf</build_depend>
+
+  <run_depend>csapex</run_depend>
+  <run_depend>csapex_point_cloud</run_depend>
+  <run_depend>csapex_transform</run_depend>
+  <run_depend>csapex_ros</run_depend>
+  <run_depend>tf</run_depend>
+
+  <export>
+    <csapex plugin="${prefix}/plugins.xml" />
+  </export>
+</package>
