@@ -24,7 +24,7 @@ enum class HeatType
     CURVATURE,
     SLOPE_DIFF,
     SBC15,
-    PATSY,
+    IROS16,
     PATSY_OLD
 };
 

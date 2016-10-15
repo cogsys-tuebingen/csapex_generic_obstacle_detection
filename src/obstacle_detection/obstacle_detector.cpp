@@ -74,10 +74,10 @@ public:
             std::make_pair("Slope Difference", (int) HeatType::SLOPE_DIFF),
             std::make_pair("Curvature", (int) HeatType::CURVATURE),
             std::make_pair("SBC 15", (int) HeatType::SBC15),
-            std::make_pair("PATSY", (int) HeatType::PATSY),
+            std::make_pair("IROS 2016", (int) HeatType::IROS16),
             std::make_pair("PATSY (old)", (int) HeatType::PATSY_OLD)
         };
-        csapex::param::Parameter::Ptr type = csapex::param::ParameterFactory::declareParameterSet("heat_type", types, (int) HeatType::SLOPE);
+        csapex::param::Parameter::Ptr type = csapex::param::ParameterFactory::declareParameterSet("heat_type", types, (int) HeatType::IROS16);
         params.addParameter(type, cb);
 
         params.addParameter(csapex::param::ParameterFactory::declareBool("transform cloud", false), do_transform_);

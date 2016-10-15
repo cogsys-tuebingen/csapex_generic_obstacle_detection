@@ -303,7 +303,7 @@ void HeatCalculator<PointT>::calculateHeat(const Point* currentP, const Point* n
     case HeatType::SBC15:
         calculateHeatSBC15(currentP, nextP, prevP, heatP);
         break;
-    case HeatType::PATSY:
+    case HeatType::IROS16:
         calculateHeatPATSY(currentP, nextP, prevP, heatP);
         break;
     case HeatType::PATSY_OLD:
