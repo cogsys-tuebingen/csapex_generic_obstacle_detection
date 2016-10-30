@@ -142,11 +142,10 @@ public:
                 NAMED_INTERLUDE(lookup);
 
                 LockedTFListener l = TFListener::getLocked();
-                if(!l.l) {
-                    node_modifier_->setError("cannot get transform listener");
-                    return;
-                }
-                tf::TransformListener& tfl = *l.l->tfl;
+                apex_assert(l.l);
+                auto listener = l.l->tfl;
+                apex_assert(listener);
+                tf::TransformListener& tfl = *listener;
 
                 ros::Time time;
                 time.fromNSec(in->header.stamp * 1000);
