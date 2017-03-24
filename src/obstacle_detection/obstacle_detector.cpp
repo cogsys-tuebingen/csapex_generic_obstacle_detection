@@ -9,10 +9,10 @@
 #include <csapex/param/parameter_factory.h>
 #include <csapex/model/node_modifier.h>
 #include <csapex/utility/register_apex_plugin.h>
-#include <csapex_point_cloud/point_cloud_message.h>
+#include <csapex_point_cloud/msg/point_cloud_message.h>
 #include <csapex/profiling/timer.h>
 #include <csapex_ros/tf_listener.h>
-#include <csapex_point_cloud/indeces_message.h>
+#include <csapex_point_cloud/msg/indices_message.h>
 #include <csapex_transform/transform_message.h>
 #include <csapex/profiling/interlude.hpp>
 
@@ -49,8 +49,8 @@ public:
         output_cloud_floor_= modifier.addOutput<PointCloudMessage>("Floor Cloud");
         output_cloud_obstacle_original_ = modifier.addOutput<PointCloudMessage>("Obstacle Cloud (as in)");
 
-        output_cloud_obstacle_indices_ = modifier.addOutput<PointIndecesMessage>("Obstacle Indices");
-        output_cloud_floor_indices_ = modifier.addOutput<PointIndecesMessage>("Floor Indices");
+        output_cloud_obstacle_indices_ = modifier.addOutput<PointIndicesMessage>("Obstacle Indices");
+        output_cloud_floor_indices_ = modifier.addOutput<PointIndicesMessage>("Floor Indices");
 
         output_transform_ = modifier.addOutput<TransformMessage>("Transform");
     }
@@ -345,11 +345,11 @@ struct Impl : ObstacleDetector::ImplInterface
         }
 
         // publish indices
-        PointIndecesMessage::Ptr o_indices_msg(new PointIndecesMessage);
+        PointIndicesMessage::Ptr o_indices_msg(new PointIndicesMessage);
         o_indices_msg->value = obstacle_indices;
         msg::publish(instance->output_cloud_obstacle_indices_, o_indices_msg);
 
-        PointIndecesMessage::Ptr f_indices_msg(new PointIndecesMessage);
+        PointIndicesMessage::Ptr f_indices_msg(new PointIndicesMessage);
         f_indices_msg->value = floor_indices;
         msg::publish(instance->output_cloud_floor_indices_, f_indices_msg);
 
