@@ -9,10 +9,10 @@
 #include <csapex/param/parameter_factory.h>
 #include <csapex/model/node_modifier.h>
 #include <csapex/utility/register_apex_plugin.h>
-#include <csapex_point_cloud/point_cloud_message.h>
+#include <csapex_point_cloud/msg/point_cloud_message.h>
 #include <csapex/profiling/timer.h>
 #include <csapex_ros/tf_listener.h>
-#include <csapex_point_cloud/indeces_message.h>
+#include <csapex_point_cloud/msg/indeces_message.h>
 #include <csapex_transform/transform_message.h>
 #include <csapex/profiling/interlude.hpp>
 
