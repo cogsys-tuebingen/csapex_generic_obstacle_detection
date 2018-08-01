@@ -65,7 +65,7 @@ public:
             std::make_pair("Linear", (int) HeatCalculatorMethod::LINEAR),
             std::make_pair("Approximated", (int) HeatCalculatorMethod::APPROX)
         };
-        csapex::param::Parameter::Ptr method = csapex::param::ParameterFactory::declareParameterSet("method", methods, (int) HeatCalculatorMethod::NAIVE);
+        csapex::param::Parameter::Ptr method = csapex::param::factory::declareParameterSet("method", methods, (int) HeatCalculatorMethod::NAIVE);
         params.addParameter(method, cb);
 
 
@@ -77,37 +77,37 @@ public:
             std::make_pair("IROS 2016", (int) HeatType::IROS16),
             std::make_pair("PATSY (old)", (int) HeatType::PATSY_OLD)
         };
-        csapex::param::Parameter::Ptr type = csapex::param::ParameterFactory::declareParameterSet("heat_type", types, (int) HeatType::IROS16);
+        csapex::param::Parameter::Ptr type = csapex::param::factory::declareParameterSet("heat_type", types, (int) HeatType::IROS16);
         params.addParameter(type, cb);
 
-        params.addParameter(csapex::param::ParameterFactory::declareBool("transform cloud", false), do_transform_);
-        params.addParameter(csapex::param::ParameterFactory::declareAngle("sensor_orientation", 0.0));
+        params.addParameter(csapex::param::factory::declareBool("transform cloud", false), do_transform_);
+        params.addParameter(csapex::param::factory::declareAngle("sensor_orientation", 0.0));
 
-        csapex::param::ParameterPtr use_lowpass = csapex::param::ParameterFactory::declareBool("use low pass filter", true);
+        csapex::param::ParameterPtr use_lowpass = csapex::param::factory::declareBool("use low pass filter", true);
         params.addParameter(use_lowpass, cb);
 
         auto condition = [use_lowpass]() { return use_lowpass->as<bool>(); };
 
-        params.addConditionalParameter(csapex::param::ParameterFactory::declareRange("lowpass/height", 0.0, 1.0, 0.1, 0.001),
+        params.addConditionalParameter(csapex::param::factory::declareRange("lowpass/height", 0.0, 1.0, 0.1, 0.001),
                                        condition, cb);
-        params.addConditionalParameter(csapex::param::ParameterFactory::declareRange("lowpass/max_distance", 0.0, 1.0, 0.1, 0.001),
+        params.addConditionalParameter(csapex::param::factory::declareRange("lowpass/max_distance", 0.0, 1.0, 0.1, 0.001),
                                        condition, cb);
-        params.addConditionalParameter(csapex::param::ParameterFactory::declareRange("lowpass/zlimit", 0.0, 1.0, 0.1, 0.001),
+        params.addConditionalParameter(csapex::param::factory::declareRange("lowpass/zlimit", 0.0, 1.0, 0.1, 0.001),
                                        condition, cb);
 
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/scale/height", 0.0, 10000.0, 5000.0, 0.1), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/scale/intensity", 0.0, 10000.0, 5000.0, 0.1), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareInterval("heat/inverval/depth", -2.0, 2.0, -2.0, 2.0, 0.01), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareInterval("heat/inverval/intensity", 0.0, 1024.0, 0.0, 1024.0, 0.1), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/zlimit", 0.0, 2.0, 0.5, 0.001), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/lookout", 0.01, 1.5, 0.1, 0.01), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/min_length", 0.01, 1.0, 0.01, 0.01), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/initial_offset", 1, 24, 1, 1), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/skip", 1, 24, 1, 1), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/step", 1, 24, 1, 1), cb);
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/max_dist", 1, 512, 128, 1), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/scale/height", 0.0, 10000.0, 5000.0, 0.1), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/scale/intensity", 0.0, 10000.0, 5000.0, 0.1), cb);
+        params.addParameter(csapex::param::factory::declareInterval("heat/inverval/depth", -2.0, 2.0, -2.0, 2.0, 0.01), cb);
+        params.addParameter(csapex::param::factory::declareInterval("heat/inverval/intensity", 0.0, 1024.0, 0.0, 1024.0, 0.1), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/zlimit", 0.0, 2.0, 0.5, 0.001), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/lookout", 0.01, 1.5, 0.1, 0.01), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/min_length", 0.01, 1.0, 0.01, 0.01), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/initial_offset", 1, 24, 1, 1), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/skip", 1, 24, 1, 1), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/step", 1, 24, 1, 1), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/max_dist", 1, 512, 128, 1), cb);
 
-        params.addParameter(csapex::param::ParameterFactory::declareRange("heat/threshold", 0.1, 10000.0, 5000.0, 0.1), cb);
+        params.addParameter(csapex::param::factory::declareRange("heat/threshold", 0.1, 10000.0, 5000.0, 0.1), cb);
     }
 
     void process()
