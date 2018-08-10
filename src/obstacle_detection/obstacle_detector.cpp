@@ -15,6 +15,7 @@
 #include <csapex_point_cloud/msg/indices_message.h>
 #include <csapex_transform/transform_message.h>
 #include <csapex/profiling/interlude.hpp>
+#include <csapex_math/param/factory.h>
 
 /// SYSTEM
 #include <pcl/PointIndices.h>

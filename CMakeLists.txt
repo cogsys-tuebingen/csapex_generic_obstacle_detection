@@ -3,6 +3,7 @@ project(generic_obstacle_detection)
 
 find_package(catkin REQUIRED COMPONENTS
     csapex
+    csapex_math
     csapex_point_cloud
     csapex_transform
     csapex_ros
