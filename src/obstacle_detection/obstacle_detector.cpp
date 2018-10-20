@@ -14,7 +14,7 @@
 #include <csapex_ros/tf_listener.h>
 #include <csapex_point_cloud/msg/indices_message.h>
 #include <csapex_transform/transform_message.h>
-#include <csapex/profiling/interlude.hpp>
+#include <csapex/profiling/trace.hpp>
 #include <csapex_math/param/factory.h>
 
 /// SYSTEM
@@ -127,7 +127,7 @@ public:
             impl::Impl<PointT>::inputCloud(this, in, sensor_orientation);
 
         } else {
-            NAMED_INTERLUDE(transform_to_base_link);
+            NAMED_TRACE(transform_to_base_link);
 
             tf::Transform trafo;
             std::string target_frame = "/base_link";
@@ -140,7 +140,7 @@ public:
                 target_frame = trafo_msg->child_frame;
 
             } else {
-                NAMED_INTERLUDE(lookup);
+                NAMED_TRACE(lookup);
 
                 LockedTFListener l = TFListener::getLocked();
                 apex_assert(l.l);
@@ -192,7 +192,7 @@ public:
             auto* outP = &in_transformed->points[0];
 
             {
-                NAMED_INTERLUDE(multiply);
+                NAMED_TRACE(multiply);
                 for(std::size_t i = 0; i < N; ++i, ++inP, ++outP) {
                     const PointT& pt_in = *inP;
                     PointT& pt_out = *outP;
@@ -205,7 +205,7 @@ public:
                 }
             }
 
-            interlude_transform_to_base_link.reset();
+            trace_transform_to_base_link.reset();
 
             impl::Impl<PointT>::inputCloud(this, in_transformed, sensor_orientation);
 
@@ -301,7 +301,7 @@ struct Impl : ObstacleDetector::ImplInterface
     void process(od::ObstacleDetector* instance, typename pcl::PointCloud<PointT>::ConstPtr cloud,
                  const double sensor_orientation)
     {
-        NAMED_INTERLUDE_INSTANCE(instance, input);
+        NAMED_TRACE_INSTANCE(instance, input);
 
         const pcl::PointCloud<PointT>& in = *cloud;
         const std::vector<PointT, Eigen::aligned_allocator<PointT> >& points = in.points;
@@ -312,7 +312,7 @@ struct Impl : ObstacleDetector::ImplInterface
         std::vector<Point> data(N, Point());
 
         {
-            NAMED_INTERLUDE_INSTANCE(instance, transform_data);
+            NAMED_TRACE_INSTANCE(instance, transform_data);
             transformData(cloud, data, sensor_orientation);
         }
 
@@ -320,15 +320,15 @@ struct Impl : ObstacleDetector::ImplInterface
 
 
         if(use_low_pass_){
-            NAMED_INTERLUDE_INSTANCE(instance, lowpass);
+            NAMED_TRACE_INSTANCE(instance, lowpass);
             low_pass_.lowPass(cloud, data);
         }
-        interlude_input.reset();
+        trace_input.reset();
 
         apex_assert(data.size() == N);
 
         {
-            NAMED_INTERLUDE_INSTANCE(instance, heat);
+            NAMED_TRACE_INSTANCE(instance, heat);
             heat_calculator_.calculate(cloud, data, heat);
             //calculateHeatParts(cloud, data, heat);
         }
@@ -341,7 +341,7 @@ struct Impl : ObstacleDetector::ImplInterface
         pcl::PointIndicesPtr floor_indices(new pcl::PointIndices);
 
         {
-            NAMED_INTERLUDE_INSTANCE(instance, classify);
+            NAMED_TRACE_INSTANCE(instance, classify);
             detector_.classify(cloud, data, heat, *obstacle_indices, *floor_indices);
         }
 
@@ -355,24 +355,24 @@ struct Impl : ObstacleDetector::ImplInterface
         msg::publish(instance->output_cloud_floor_indices_, f_indices_msg);
 
 
-        NAMED_INTERLUDE_INSTANCE(instance, output);
+        NAMED_TRACE_INSTANCE(instance, output);
 
         if(msg::isConnected(instance->output_cloud_heat_)) {
-            NAMED_INTERLUDE_INSTANCE(instance, output_heat);
+            NAMED_TRACE_INSTANCE(instance, output_heat);
             PointCloudMessage::Ptr msg_heat(new PointCloudMessage(cloud->header.frame_id, cloud->header.stamp));
             msg_heat->value = detector_.generateHeatCloud(cloud, heat);
             msg::publish(instance->output_cloud_heat_, msg_heat);
         }
 
         if(msg::isConnected(instance->output_cloud_classified_)) {
-            NAMED_INTERLUDE_INSTANCE(instance, output_classified);
+            NAMED_TRACE_INSTANCE(instance, output_classified);
             PointCloudMessage::Ptr msg_class(new PointCloudMessage(cloud->header.frame_id, cloud->header.stamp));
             msg_class->value = detector_.generateClassifiedCloud(cloud, *obstacle_indices, *floor_indices);
             msg::publish(instance->output_cloud_classified_, msg_class);
         }
 
         if(msg::isConnected(instance->output_cloud_obstacle_)){
-            NAMED_INTERLUDE_INSTANCE(instance, output_obstacles);
+            NAMED_TRACE_INSTANCE(instance, output_obstacles);
 
             bool c_labeled = msg::isConnected(instance->output_cloud_obstacle_);
             bool c_original = msg::isConnected(instance->output_cloud_obstacle_original_);
@@ -421,7 +421,7 @@ struct Impl : ObstacleDetector::ImplInterface
         }
 
         if(msg::isConnected(instance->output_cloud_floor_)){
-            NAMED_INTERLUDE_INSTANCE(instance, output_floor);
+            NAMED_TRACE_INSTANCE(instance, output_floor);
 
 
             typename pcl::PointCloud<PointT>::Ptr output_floor(new pcl::PointCloud<PointT>);
